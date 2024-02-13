@@ -4,14 +4,13 @@ import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
-import org.aeonbits.owner.ConfigFactory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import ru.aydar.helpers.Attach;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class TestBase {
     @BeforeAll
@@ -35,7 +34,9 @@ public class TestBase {
     void addAttachments() {
         Attach.screenshotAs("Финальный скриншот");
         Attach.pageSource();
-        Attach.browserConsoleLogs();
+        if (!Objects.equals(Configuration.browser, "firefox")) {
+            Attach.browserConsoleLogs();
+        }
         Attach.addVideo();
         Selenide.closeWebDriver();
     }
