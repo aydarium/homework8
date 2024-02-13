@@ -1,6 +1,8 @@
 package ru.aydar.utils;
 
 import com.github.javafaker.Faker;
+import org.aeonbits.owner.ConfigFactory;
+import ru.aydar.config.TestDataConfig;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -8,24 +10,25 @@ import java.util.HashMap;
 import java.util.Locale;
 
 public class RandomUtils {
-    static Faker faker = new Faker(Locale.ITALY);
+    static TestDataConfig testDataConfig = ConfigFactory.create(TestDataConfig.class);
+    static Faker faker = new Faker(Locale.forLanguageTag(testDataConfig.locale()));
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM,yyyy");
     SimpleDateFormat monthFormat = new SimpleDateFormat("MMMM");
     SimpleDateFormat dayFormat = new SimpleDateFormat("dd");
     Date birthday = faker.date().birthday();
 
     public String firstName = faker.name().firstName();
-    public String lastName = faker.elderScrolls().lastName();
+    public String lastName = faker.name().lastName();
     public String gender = getGender();
     public String phoneNumber = faker.phoneNumber().subscriberNumber(10);
     public String fullBirthDate = dateFormat.format(birthday);
     public String dayOfBirth = dayFormat.format(birthday);
     public String monthOfBirth = monthFormat.format(birthday);
     public String yearOfBirth = String.valueOf(birthday.getYear() + 1900);
-    public String email = faker.internet().emailAddress(firstName.toLowerCase() + yearOfBirth);
+    public String email = testDataConfig.email();
     public String subject = getSubject();
     public String hobby = getHobby();
-    public String address = faker.chuckNorris().fact();
+    public String address = testDataConfig.address();
     public String city = getCity();
     public String state = getStateByCity(city);
 
